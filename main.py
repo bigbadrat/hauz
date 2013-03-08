@@ -18,6 +18,7 @@ import webapp2,jinja2
 import os, datetime
 from google.appengine.api import users
 from google.appengine.ext import db
+import simplejson as json
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)+"/templates" ))
@@ -33,6 +34,15 @@ class MainHandler(webapp2.RequestHandler):
         else:
             self.redirect(users.create_login_url(self.request.uri))
 
+class DataHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'application/json'
+        request_args = json.loads(self.request.get("args"))
+        self.response.out.write(json.dumps(["the request is.." , request_args]))
+
+
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/data', DataHandler)
 ], debug=True)
