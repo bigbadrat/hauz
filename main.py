@@ -18,7 +18,7 @@ import webapp2,jinja2
 import os, datetime
 from google.appengine.api import users
 from google.appengine.ext import db
-import simplejson as json
+import json
 
 jinja_environment = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)+"/templates" ))
