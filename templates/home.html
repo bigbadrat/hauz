@@ -3,4 +3,40 @@
 
 {% block content %}
 <b>{{ user }}</b> says hello world:
+
+<form class="form-horizontal">
+    
+        <legend> Agregar una nueva casa </legend>
+        <div class="control-group">
+            <label class="control-label" for="hauz_direccion">Direción</label>
+            <div class="controls">
+                    <input type="text" id="hauz_direccion" placeholder="Calle 1 con Avenida 5">
+            </div>
+        </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" id="hauz_save" class="btn">Guardar</button>
+        </div>
+    </div>
+</form>
+
+<button id="hauz_list" class="btn">Listar</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th> Location <t/h> 
+        </tr>
+    </thead>
+    <tbody id="hauz_table">
+    {% for hauz in hauzes %} 
+        <tr>
+            <td> {{ hauz.location }} </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
 {% endblock %}

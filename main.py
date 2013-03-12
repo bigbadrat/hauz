@@ -18,6 +18,7 @@ import webapp2,jinja2
 import os, datetime
 from google.appengine.api import users
 from google.appengine.ext import db
+from hauz_model import *
 import json
 
 jinja_environment = jinja2.Environment(
@@ -29,7 +30,9 @@ class MainHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         if user:
             values = {}
+            hauzes = Hauz.all()
             values["user"] = user.nickname()
+            values["hauzes"] = {}
             self.response.out.write(template.render(values))
         else:
             self.redirect(users.create_login_url(self.request.uri))
@@ -38,8 +41,18 @@ class DataHandler(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'
         request_args = json.loads(self.request.get("args"))
-        self.response.out.write(json.dumps(["the request is.." , request_args]))
+        hauzes = Hauz.all()
+        hauzes_out = []
+        for hauz in hauzes:
+            hauzes_out.append({ 'location': hauz.location, 'gps_location': hauz.gps_location} )
+        self.response.out.write(json.dumps(hauzes_out) )
 
+    def post(self):
+        self.response.headers['Content-Type'] = 'application/json'
+        request_args = json.loads(self.request.get("args"))
+        new_hauz = Hauz( location = request_args["location"] ) 
+        new_hauz.put()
+        self.response.out.write(json.dumps( request_args ) ) 
 
 
 app = webapp2.WSGIApplication([
